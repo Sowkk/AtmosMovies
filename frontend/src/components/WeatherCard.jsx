@@ -2,14 +2,14 @@ import React, { useState, useEffect } from 'react';
 import { Sun, Cloud, CloudRain, CloudSnow, Wind, CloudLightning } from 'lucide-react';
 
 const WeatherCard = ({
-  weatherType = 'cloudy',
-  temperature = '72°F',
-  humidity = '50%',
-  windSpeed = '5 mph'
+  weatherType,
+  temperature,
+  humidity,
+  windSpeed
 }) => {
   const [currentDate, setCurrentDate] = useState('');
   const [currentTime, setCurrentTime] = useState('');
-
+  
   useEffect(() => {
     const updateDateTime = () => {
       const now = new Date();
@@ -22,7 +22,7 @@ const WeatherCard = ({
   }, []);
 
   const getWeatherIcon = () => {
-    const iconProps = "w-16 h-16 transition-all duration-500 ease-in-out transform hover:scale-110";
+    const iconProps = "w-32 h-32 transition-all duration-500 ease-in-out transform hover:scale-110";
     switch (weatherType) {
       case 'sunny':
         return <Sun className={`${iconProps} text-yellow-400 spinning-sun`} />;
@@ -61,31 +61,33 @@ const WeatherCard = ({
   };
 
   return (
-    <div className={`min-h-screen w-full bg-gradient-to-br ${getBackgroundColor()} flex items-center justify-center transition-all duration-500 ease-in-out`}>
+    <div className={`h-screen w-full bg-[url('https://img.freepik.com/premium-photo/clear-sky-calm-sea-noon-beautiful-natural-view-ocean-sea-background_1020697-526024.jpg')] bg-no-repeat bg-cover bg-center flex items-center justify-center transition-all duration-500 ease-in-out`}>
       <style jsx>{`
         @keyframes spin {
           from { transform: rotate(0deg); }
           to { transform: rotate(360deg); }
         }
         .spinning-sun {
-          animation: spin 25s linear infinite;
+          animation: spin 30s linear infinite;
         }
       `}</style>
-      <div className="bg-white bg-opacity-60 backdrop-blur-sm rounded-lg shadow-lg p-6 w-80">
-        <div className="flex justify-between items-start mb-4">
+      <div className="bg-white bg-opacity-60 backdrop-blur-sm rounded-lg shadow-lg p-6 w-3/5 h-[38%] flex">
+        <div className="flex-1 flex flex-col justify-between">
           <div>
-            <p className="text-md text-gray-700">{currentDate}</p>
-            <p className="text-md text-gray-700">{currentTime}</p>
+            <p className="text-xl text-gray-700">{currentDate}</p>
+            <p className="text-2xl text-gray-700">{currentTime}</p>
           </div>
-          <p className="text-3xl font-bold text-gray-800">{temperature}</p>
+          <div className="text-lg flex justify-between text-gray-700">
+            <p>Humidity: {humidity}</p>
+            <p>Wind: {windSpeed}</p>
+          </div>
         </div>
-        <div className="flex flex-col items-center mb-4">
+        <div className="flex-1 flex flex-col items-center justify-center">
           {getWeatherIcon()}
-          <p className="text-xl mt-4 capitalize text-gray-800">{weatherType}</p>
+          <p className="text-2xl mt-2 capitalize text-gray-800">{weatherType}</p>
         </div>
-        <div className="flex justify-between text-gray-700">
-          <p>Humidity: {humidity}</p>
-          <p>Wind: {windSpeed}</p>
+        <div className="flex-1 flex items-center justify-end">
+          <p className="text-6xl font-bold text-gray-800">{temperature}°C</p>
         </div>
       </div>
     </div>

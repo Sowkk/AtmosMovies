@@ -1,7 +1,9 @@
+// currweather.jsx
 import React, { useState } from 'react';
 import axios from 'axios';
 import CurrentLocation from './CurrentLocation';
 import WeatherCard from './WeatherCard';
+import MovieGenreDashboard from './MovieGenreDashboard';
 
 function CurrentWeather() {
   const [location, setLocation] = useState(null);
@@ -36,11 +38,11 @@ function CurrentWeather() {
       Atmosphere: 'windy',
       Thunderstorm: 'storms',
     };
-    return conditionMap[condition] || 'cloudy';
+    return conditionMap[condition];
   };
 
   return (
-    <div className="min-h-screen w-full flex items-center justify-center bg-gray-100">
+    <div className="min-h-screen w-full flex flex-col items-center justify-center bg-gray-100">
       {locationPermission === 'pending' && (
         <p className="text-xl">Getting your location...</p>
       )}
@@ -50,15 +52,19 @@ function CurrentWeather() {
       {locationPermission === 'granted' && !weather && (
         <p className="text-xl">Fetching weather data...</p>
       )}
-      {weather && (
-        <WeatherCard
-          weatherType={mapWeatherCondition(weather.weather[0].main)}
-          temperature={`${Math.round(weather.main.temp)}°C`}
-          humidity={`${weather.main.humidity}%`}
-          windSpeed={`${weather.wind.speed} m/s`}
-        />
-      )}
       {!location && <CurrentLocation onLocationFetched={handleLocationFetched} onPermissionChange={handlePermissionChange} />}
+      {weather && (
+        <div className="flex flex-col items-center ">
+            <WeatherCard 
+            //weatherData ={weather}
+               weatherType={mapWeatherCondition(weather.weather[0].main)}
+               temperature={`${Math.round(weather.main.temp)}°C`}
+               humidity={`${weather.main.humidity}%`}
+              windSpeed={`${weather.wind.speed} m/s`}
+            />
+            <MovieGenreDashboard weather={mapWeatherCondition(weather.weather[0].main)} />
+        </div>
+      )}
     </div>
   );
 }
